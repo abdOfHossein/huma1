@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package user;
+
+service UserController {
+  rpc FindOne (Id) returns (User) {}
+  rpc addUser (UserInfo) returns (successMessage){}
+}
+
+message Id {
+  int32 id = 1;
+}
+
+message User {
+  int32 id = 1;
+  string firstname = 2;
+  string lastname=3;
+  int32 phoneNumber=4;
+}
+
+message UserInfo{
+  string firstname = 1;
+  string lastname=2;
+  int32 phoneNumber=3;
+}
+
+message successMessage{
+  string msg=1;
+}
