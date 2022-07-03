@@ -4,7 +4,7 @@ package user;
 
 service UserController {
   rpc FindOne (Id) returns (User) {}
-  rpc addUser (UserInfo) returns (successMessage){}
+  rpc AddUser (UserInfo) returns (successMessage){}
 }
 
 message Id {
@@ -15,13 +15,13 @@ message User {
   int32 id = 1;
   string firstname = 2;
   string lastname=3;
-  int32 phoneNumber=4;
+  double phoneNumber=4;
 }
 
 message UserInfo{
   string firstname = 1;
   string lastname=2;
-  int32 phoneNumber=3;
+  double phoneNumber=3;
 }
 
 message successMessage{

@@ -21,8 +21,6 @@ interface IUserInfo {
 
 @Controller('user')
 export class UserController implements OnModuleInit {
-
-
   @Client(microserviceOptions)
   private client: ClientGrpc;
 
@@ -33,22 +31,25 @@ export class UserController implements OnModuleInit {
   }
 
   @Get(':id')
-  async findOne(@Param() id: number) {
+  async findOne(@Param('id') id: string) {
     try {
       console.log(id);
-
-      return this.grpcService.findOne({ id });
+      const result = this.grpcService.findOne({ id });
+      console.log(`result of Get Req in api-gateway service:${result}`);
+      return result;
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
   }
 
   @Post('creat')
-  async addUser(@Body() userInfo: IUserInfo) {
+  async addUser(@Body() userInfo: any) {
     try {
       console.log(userInfo);
-
-      return this.grpcService.addUser({ userInfo });
+      const {firstName,lastName,phoneNumber} =userInfo;
+      console.log({firstName,lastName});
+      
+      return this.grpcService.addUser({firstName,lastName,phoneNumber:12});
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
