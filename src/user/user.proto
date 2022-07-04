@@ -1,9 +1,12 @@
+
+import "google/protobuf/empty.proto";
 syntax = "proto3";
 
 package user;
 
 service UserController {
   rpc FindOne (Id) returns (User) {}
+  rpc FindAll (google.protobuf.Empty) returns (Users) {}
   rpc AddUser (UserInfo) returns (successMessage){}
 }
 
@@ -13,14 +16,24 @@ message Id {
 
 message User {
   int32 id = 1;
-  string firstname = 2;
-  string lastname=3;
+  string firstName = 2;
+  string lastName=3;
   double phoneNumber=4;
 }
 
+
+
+message Users{
+
+  repeated User data=1;
+}
+
+message Empty{
+
+}
 message UserInfo{
-  string firstname = 1;
-  string lastname=2;
+  string firstName = 1;
+  string lastName=2;
   double phoneNumber=3;
 }
 

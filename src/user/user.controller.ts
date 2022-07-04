@@ -6,12 +6,14 @@ import {
   OnModuleInit,
   Inject,
   Param,
+  Res,
 } from '@nestjs/common';
 
 import { Client, ClientGrpc } from '@nestjs/microservices';
 import { microserviceOptions } from './grpc.option';
 import { IGrpcService } from './grpc.interface';
 import { Logger } from '@nestjs/common';
+import { Response } from 'express';
 
 interface IUserInfo {
   firstName: string;
@@ -30,6 +32,23 @@ export class UserController implements OnModuleInit {
     this.grpcService = this.client.getService<IGrpcService>('UserController');
   }
 
+  //read all user
+  @Get('all')
+  async findAll(@Res() response: Response) {
+    try {
+      const result = this.grpcService.findAll({});
+      console.log(`result of Get Req in api-gateway service:${result}`);
+      const res = JSON.stringify(result);
+      console.log(res);
+
+      response.json(res);
+      return;
+    } catch (error) {
+      console.log(`err of findOne in api-gateway controller:${error}`);
+    }
+  }
+
+  //read one user
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -46,10 +65,10 @@ export class UserController implements OnModuleInit {
   async addUser(@Body() userInfo: any) {
     try {
       console.log(userInfo);
-      const {firstName,lastName,phoneNumber} =userInfo;
-      console.log({firstName,lastName});
-      
-      return this.grpcService.addUser({firstName,lastName,phoneNumber:12});
+      const { firstName, lastName, phoneNumber } = userInfo;
+      console.log({ firstName, lastName });
+
+      return this.grpcService.addUser({ firstName, lastName, phoneNumber: 12 });
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
