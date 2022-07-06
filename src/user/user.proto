@@ -8,6 +8,7 @@ service UserController {
   rpc FindOne (Id) returns (User) {}
   rpc FindAll (google.protobuf.Empty) returns (Users) {}
   rpc AddUser (UserInfo) returns (successMessage){}
+  rpc UpdateUser(ReqBodyUpdateUSer) returns(successMessage){}
 }
 
 message Id {
@@ -39,4 +40,9 @@ message UserInfo{
 
 message successMessage{
   string msg=1;
+}
+
+message ReqBodyUpdateUSer{
+ int32 id =1;
+ User  info=2;
 }

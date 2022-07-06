@@ -7,6 +7,7 @@ import {
   Inject,
   Param,
   Res,
+  Put,
 } from '@nestjs/common';
 
 import { Client, ClientGrpc } from '@nestjs/microservices';
@@ -52,23 +53,45 @@ export class UserController implements OnModuleInit {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
-      console.log(id);
-      const result = this.grpcService.findOne({ id });
+      const Id = Number(id['id']);
+      const result = this.grpcService.findOne({ id: Id });
       console.log(`result of Get Req in api-gateway service:${result}`);
       return result;
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
   }
-
+  //creat user
   @Post('creat')
   async addUser(@Body() userInfo: any) {
     try {
-      console.log(userInfo);
       const { firstName, lastName, phoneNumber } = userInfo;
-      console.log({ firstName, lastName });
+      return this.grpcService.addUser({ firstName, lastName, phoneNumber });
+    } catch (error) {
+      console.log(`err of findOne in api-gateway controller:${error}`);
+    }
+  }
 
-      return this.grpcService.addUser({ firstName, lastName, phoneNumber: 12 });
+  //update user
+  @Put('update/:id')
+  async updateUser(@Body() info: any, @Param('id') id: string) {
+    try {
+      const { firstName, lastName, phoneNumber } = info;
+      console.log(`id===>${id}`);
+
+      const Id = Number(id);
+      console.log(`Id===>${Id}`);
+
+      console.log(
+        `updated info${{
+          id: Id,
+          info: { firstName, lastName, phoneNumber },
+        }}`,
+      );
+      return this.grpcService.updateUser({
+        id: Id,
+        info: { firstName, lastName, phoneNumber },
+      });
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
