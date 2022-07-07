@@ -9,7 +9,9 @@ service UserController {
   rpc FindAll (google.protobuf.Empty) returns (Users) {}
   rpc AddUser (UserInfo) returns (successMessage){}
   rpc UpdateUser(ReqBodyUpdateUSer) returns(successMessage){}
+  rpc DeleteUser(Id) returns(successMessage){}
 }
+
 
 message Id {
   int32 id = 1;
@@ -21,12 +23,9 @@ message User {
   string lastName=3;
   double phoneNumber=4;
 }
-
-
-
 message Users{
 
-  repeated User data=1;
+  repeated data=1;
 }
 
 message Empty{

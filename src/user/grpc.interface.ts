@@ -2,9 +2,10 @@ import { Observable } from 'rxjs';
 
 export interface IGrpcService {
   findOne(id: IId): Observable<any>;
-  findAll(requestFindAll: any): Promise<Array<object> | [] | object>;
+  findAll(requestFindAll: any): Promise<Array<any>| object>;
   addUser(userInfo: IUserInfo): Observable<any>;
-  updateUser(reqBodyUpdateUSer:IReqBodyUpdateUSer): Promise<any>;
+  updateUser(reqBodyUpdateUSer: IReqBodyUpdateUSer): Promise<any>;
+  deleteUser(id: IId): Promise<any>;
 }
 
 interface IUserInfo {

@@ -8,6 +8,7 @@ import {
   Param,
   Res,
   Put,
+  Delete,
 } from '@nestjs/common';
 
 import { Client, ClientGrpc } from '@nestjs/microservices';
@@ -34,26 +35,23 @@ export class UserController implements OnModuleInit {
   }
 
   //read all user
-  @Get('all')
-  async findAll(@Res() response: Response) {
+  @Get('show/all')
+  async findAll(): Promise<Array<any> | object> {
     try {
       const result = this.grpcService.findAll({});
-      console.log(`result of Get Req in api-gateway service:${result}`);
-      const res = JSON.stringify(result);
-      console.log(res);
+      console.log(`result in api-gateway findAll===>${JSON.stringify(result)}`);
 
-      response.json(res);
-      return;
+      return result;
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
   }
 
   //read one user
-  @Get(':id')
+  @Get('show/:id')
   async findOne(@Param('id') id: string) {
     try {
-      const Id = Number(id['id']);
+      const Id = Number(id);
       const result = this.grpcService.findOne({ id: Id });
       console.log(`result of Get Req in api-gateway service:${result}`);
       return result;
@@ -77,21 +75,32 @@ export class UserController implements OnModuleInit {
   async updateUser(@Body() info: any, @Param('id') id: string) {
     try {
       const { firstName, lastName, phoneNumber } = info;
-      console.log(`id===>${id}`);
-
       const Id = Number(id);
       console.log(`Id===>${Id}`);
 
       console.log(
-        `updated info${{
+        `updated info${JSON.stringify({
           id: Id,
           info: { firstName, lastName, phoneNumber },
-        }}`,
+        })}`,
       );
       return this.grpcService.updateUser({
         id: Id,
         info: { firstName, lastName, phoneNumber },
       });
+    } catch (error) {
+      console.log(`err of findOne in api-gateway controller:${error}`);
+    }
+  }
+
+  //delete user
+  @Delete('delete/:id')
+  async deleteUser(@Param('id') id: string) {
+    try {
+      const Id = Number(id);
+
+      console.log(`delete Id${Id}`);
+      return this.grpcService.deleteUser({ id: Id });
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
