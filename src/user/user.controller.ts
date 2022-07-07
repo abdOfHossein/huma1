@@ -22,6 +22,9 @@ interface IUserInfo {
   lastName: string;
   phoneNumber: number;
 }
+interface IUsers{
+  data:Array<IUserInfo>
+}
 
 @Controller('user')
 export class UserController implements OnModuleInit {
@@ -36,7 +39,7 @@ export class UserController implements OnModuleInit {
 
   //read all user
   @Get('show/all')
-  async findAll(): Promise<Array<any> | object> {
+  async findAll(): Promise<IUsers | object> {
     try {
       const result = this.grpcService.findAll({});
       console.log(`result in api-gateway findAll===>${JSON.stringify(result)}`);
